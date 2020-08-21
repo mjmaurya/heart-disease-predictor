@@ -3,17 +3,10 @@ from flask import render_template,redirect,request
 import pandas as pd
 import sys
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-#from sklearn.metrics import mean_squared_log_error
-from sklearn.linear_model import LogisticRegression
-#from sklearn.metrics import accuracy_score
-from test import prediction
-
+import pickle
 app=Flask(__name__)
     
-
+model=pickle.load(open('model.pkl','rb'))
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -27,7 +20,7 @@ def result():
         maximum_heart_rate_achieved=request.form["maximum_heart_rate_achieved"]
         oldpeak=request.form["oldpeak"]
         thal=request.form["thal"]
-        sex=request.form["age"]
+        sex=request.form["gender"]
         fasting_blood_sugar=request.form['fasting_blood_sugar']	
         resting_electrocardiographic_results=request.form['resting_electrocardiographic_results']		
         exercise_induced_angina=request.form['exercise_induced_angina']
@@ -47,7 +40,10 @@ def result():
         lst.append((slope))
         lst.append((number_of_major_vessels))
         lst.append((thal))
-        result=prediction(lst)
+        ans=model.predict([np.array(lst,dtype='int64')])
+        result=ans[0]
+        print(ans)
+        print(lst)
         return render_template("result.html",result=result,lst=lst)
 
 

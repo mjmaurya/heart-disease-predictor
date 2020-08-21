@@ -35,7 +35,7 @@
         
           <!-- Modal Header -->
           <div class="modal-header">
-            {% if result.all()==1 %}
+            {% if result==1 %}
             <img src="/static/Image/listening_heart.gif" width="100%" height="300">
             {% else %}
             <img src="/static/Image/anniversary.gif" width="100%" height="300">
@@ -45,7 +45,8 @@
           
           <!-- Modal body -->
           <div class="modal-body">
-            {% if result.all()==1 %}
+            {{result}}
+            {% if result==1 %}
             <hr>
             <h3>You are infected</h3>
             {% else %}
